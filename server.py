@@ -16,7 +16,7 @@ app.secret_key = 'Nazky'
 CORS(app)
 
 PAYLOAD_DIR = "payloads"
-CONFIG_DIR = "config"
+CONFIG_DIR = "static/config"
 CONFIG_FILE = os.path.join(CONFIG_DIR, "settings.json")
 ALLOWED_EXTENSIONS = {'bin', 'elf'}
 url = "http://localhost:8000/send_payload"
@@ -154,14 +154,17 @@ def sending_payload():
             return jsonify({"error": "Missing IP parameter"}), 400
         if not payload:
             result = send_payload(file_path='payloads/js/lapse.js', host=host, port=50000)
+            time.sleep(1)
             if result:
-                time.sleep(5)
                 result = send_payload(file_path='payloads/kstuff.elf', host=host, port=9021)
+                time.sleep(1)
                 if result:
                     for filename in os.listdir(PAYLOAD_DIR):
                         if (fnmatch.fnmatch(filename, '*.bin') or fnmatch.fnmatch(filename, '*.elf')) and filename != 'kstuff.elf':
                             result = send_payload(file_path=os.path.join(PAYLOAD_DIR,filename), host=host, port=9021)
-                            time.sleep(5)
+                            time.sleep(1)
+                            if not result:
+                                return jsonify({"error": f"Failed to send {filename}"}), 500
                     return jsonify({"success": True, "message": "All payloads sent successfully"})
                 else:
                     return jsonify({"error": "Failed to send kstuff.elf"}), 500
@@ -195,7 +198,6 @@ def update_y2jb():
     try:
         url = "https://raw.githubusercontent.com/Gezine/Y2JB/main/payloads/lapse.js"
         print(f"Fetching update from: {url}")
-        import requests 
         response = requests.get(url, timeout=10)
         if response.status_code == 200:
             target_dir = os.path.join(PAYLOAD_DIR, 'js')

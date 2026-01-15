@@ -1,7 +1,30 @@
 document.addEventListener('DOMContentLoaded', () => {
-    loadTheme(); 
     loadsettings();
+    loadTheme(); 
 });
+
+async function readJSON(filename) {
+    try {
+        const response = await fetch(filename);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching JSON:', error);
+        throw error;
+    }
+}
+
+async function getJSONValue(filename, property) {
+    try {
+        const data = await readJSON(filename);
+        return data[property];
+    } catch (error) {
+        console.error('Error getting JSON value:', error);
+        return null;
+    }
+}
 
 async function uploadPayload() {
   try {
@@ -34,7 +57,7 @@ async function uploadPayload() {
     statusEl.className = "text-xs text-right mb-2 text-green-500 font-bold";
 
     fileInput.value = ""; 
-    loadpayloads();
+    await loadpayloads();
 
     setTimeout(() => {
         statusEl.textContent = "";
@@ -51,16 +74,23 @@ async function saveIP() {
     const ipInput = document.getElementById("IP");
     const ipValue = ipInput.value;
     if (ipValue.trim() !== "") {
-        localStorage.setItem("savedIP", ipValue);
         setip(ipValue);
     }
 }
 
 async function loadIP() {
-    const savedIP = localStorage.getItem("savedIP");
-    if (savedIP) {
-        document.getElementById("IP").value = savedIP;
-        setip(savedIP);
+    try {
+        const savedIP = await getJSONValue('static/config/settings.json', 'ip');
+        // Better check to handle undefined values
+        if (savedIP) {
+            document.getElementById('IP').value = savedIP;
+        } else {
+            document.getElementById('IP').value = '';
+        }
+        
+    } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('IP').innerHTML = 'Error loading IP';
     }
 }
 
@@ -72,11 +102,15 @@ async function saveAJB() {
 }
 
 async function loadAJB() {
-    const savedAJB = localStorage.getItem("savedAJB");
-    const checkbox = document.getElementById("AJB-B");
-    const isTrue = (savedAJB === "true");
-    checkbox.checked = isTrue;
-    setajb(isTrue.toString());
+    try {
+        const savedAJB = await getJSONValue('static/config/settings.json', 'ajb');
+        const checkbox = document.getElementById("AJB-B");
+        const isTrue = (savedAJB === "true");
+        checkbox.checked = isTrue;
+    } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('IP').innerHTML = 'Error loading IP';
+    }
 }
 
 async function setajb(str) {
@@ -97,13 +131,11 @@ async function setip(str) {
 
 async function SendPayload(str="") {
     const btn = document.getElementById('SJB');
-    const originalText = btn.innerText;
 
     try {
         if(!str) {
-            btn.innerText = "SENDING...";
             btn.disabled = true;
-            btn.classList.add('opacity-75');
+            btn.classList.add('opacity-50');
         }
 
         const response = await fetch('/send_payload', {
@@ -111,14 +143,14 @@ async function SendPayload(str="") {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 payload: str,
-                IP: localStorage.getItem("savedIP")
+                IP: document.getElementById('IP').value
             })
         });
 
         const text = await response.text();
         
         if(!str) {
-            alert('Jailbreak command sent.');
+            console.log('Jailbreak command sent.');
         } else {
             console.log("Payload sent: " + str);
         }
@@ -128,9 +160,8 @@ async function SendPayload(str="") {
         alert('Error: ' + error);
     } finally {
         if(!str) {
-            btn.innerText = originalText;
             btn.disabled = false;
-            btn.classList.remove('opacity-75');
+            btn.classList.remove('opacity-50');
         }
     }
 }
@@ -144,16 +175,16 @@ async function DeletePayload(str) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ payload: str })
         });
-        loadpayloads();
+        await loadpayloads();
     } catch (error) {
         alert(error);
     }
 }
 
-function loadsettings() {
-    loadIP();
-    loadAJB();
-    loadpayloads();
+async function loadsettings() {
+    await loadIP();
+    await loadAJB();
+    await loadpayloads();
 }
 
 async function loadpayloads() {

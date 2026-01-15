@@ -74,10 +74,6 @@ First make sure to put the IP of you'r console when it's done you can click on t
 
 If you did check the "Auto-Jailbreak" before pressing the "Start Jailbreak" button and you have problems simply refresh the page, if you still have issues uncheck "Auto-Jailbreak" and restart the server.
 
-<h3 style="color: #ff0000;">⚠️ THE IP AND THE CHECKBOX STATUS ARE STOCK ON THE SERVER BUT ALSO LOCALLY ⚠️</h3>
-
-This mean that if you use a new device or web-browser you need to repeat the **Configuration** steps (i am going to try to fix this later).
-
 
 ## Credits
 
@@ -89,5 +85,8 @@ This mean that if you use a new device or web-browser you need to repeat the **C
   
 
 ## TODO
-- [x] Add Y2JB auto update
+- [ ] Add Y2JB auto update (download0.dat)
+- [ ] Add Y2JB update blocker option (appinfo.db, param.json, app.db)
+- [ ] Add repo management (to automaticlly update payloads)
 - [ ] Add support to load custom js
+- [ ] Make it compatible with [ps5_y2jb_autoloader](https://github.com/itsPLK/ps5_y2jb_autoloader) (not sure if it's possible)
