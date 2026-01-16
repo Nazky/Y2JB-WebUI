@@ -1,0 +1,9 @@
+.custom-scroll::-webkit-scrollbar { width: 4px; }
+.custom-scroll::-webkit-scrollbar-track { background: transparent; }
+.custom-scroll::-webkit-scrollbar-thumb { background-color: #555; border-radius: 10px; }
+html.dark body { background-color: #000000; color: #e5e5e5; }
+html.dark .surface { background-color: #121212; border-color: #2a2a2a; }
+html.dark .input-field { background-color: #000000; border-color: #333; color: white; }
+html:not(.dark) body { background-color: #f3f4f6; color: #111827; }
+html:not(.dark) .surface { background-color: #ffffff; border-color: #e5e7eb; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+html:not(.dark) .input-field { background-color: #f9fafb; border-color: #d1d5db; color: #111827; }

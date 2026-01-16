@@ -1,0 +1,6 @@
+html.dark body { background-color: #000000; color: #e5e5e5; }
+html.dark .surface { background-color: #121212; border-color: #2a2a2a; }
+html.dark .input-field { background-color: #000000; border-color: #333; color: white; }
+.custom-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
+.custom-scroll::-webkit-scrollbar-track { background: transparent; }
+.custom-scroll::-webkit-scrollbar-thumb { background-color: #333; border-radius: 3px; }

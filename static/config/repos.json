@@ -10,12 +10,6 @@
         "asset_pattern": "kstuff.elf",
         "save_path": "payloads/kstuff.elf"
     },
-    "ftpsrv.elf": {
-        "type": "release",
-        "repo": "drakmor/ftpsrv",
-        "asset_pattern": "ftpsrv-ps5.elf",
-        "save_path": "payloads/ftpsrv-ps5.elf"
-    },
     "shadowmount.elf": {
         "type": "release",
         "repo": "adel-ailane/ShadowMount",
@@ -27,5 +21,11 @@
         "repo": "adel-ailane/ShadowMount",
         "asset_pattern": "notify.elf",
         "save_path": "payloads/notify.elf"
+    },
+    "ftpsrv.elf": {
+        "type": "release",
+        "save_path": "payloads/ftpsrv-ps5.elf",
+        "repo": "drakmor/ftpsrv",
+        "asset_pattern": "ftpsrv-ps5.elf"
     }
 }

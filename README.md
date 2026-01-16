@@ -6,9 +6,9 @@
 # F.A.Q
 
 ### What is this thing ?
-This is a local website that allow you to manage everything related to Y2JB easily, with this you can upload, delete and send payloads to you'r console, every payloads uploaded using the site are loaded using the youtube app later.
+This is a local website that allow you to manage everything related to Y2JB easily, with this you can upload, delete and send payloads to you'r console. Payloads can be organized into subdirectories (like `payloads/js/`) and the UI will automatically find them.
 ### How can i upload a payload ?
-You just have to select (or drag and drop) a payload then click on the "upload a payload" button. **You can also download payloads directly from a URL (ending in .bin, .elf or .js) using the input field next to file selection.** Alternatively, you can directly copy your payloads inside the payloads folder.
+You just have to select (or drag and drop) a payload then click on the "upload a payload" button. **You can also download payloads directly from a URL using the input field next to file selection.** These URL downloads are automatically saved to your Repository Manager for future updates.
 ### How can i send a payload ?
 To send a payload that you have uploaded simply click on the "Load payload" button.
 ### How can i delete a payload ?
@@ -20,7 +20,7 @@ Well not right now, i maybe fixing that in a next update.
 ### Do i still need to have Y2JB installed on my console ?
 Yes of course, this is not a replacement of [Y2JB](https://github.com/Gezine/Y2JB), make sure to install it first.
 ### How do I update payloads from GitHub?
-Use the **"Select Update"** menu in the navigation bar to choose which payloads to update (or select "All Payloads"). Once selected, click the **"Update"** icon. The system will automatically fetch the latest releases or direct files based on the configuration in `repos.json`.
+Use the **"Select Update"** menu in the navigation bar to choose which payloads to update. Repository configurations (Direct URL or GitHub Release) can be managed via the **"Repos"** button in the navigation bar. The system uses `repos.json` to track and fetch the latest versions.
 ### Does this work with...
 You need something to host the server (pc, raspeberry pi, phone, ...) once the server is up you can access the WebUI from anything that can display a webpage (Android, IOS, PC, Nintendo Switch, ...).
 ### Can i upload any payload ?
@@ -89,4 +89,5 @@ If you did check the "Auto-Jailbreak" before pressing the "Start Jailbreak" butt
 - [ ] Add Y2JB update blocker option (appinfo.db, param.json, app.db)
 - [X] Add repo management (to automaticlly update payloads)
 - [X] Add support to load custom js
+- [X] Add recursive payload scanning
 - [ ] Make it compatible with [ps5_y2jb_autoloader](https://github.com/itsPLK/ps5_y2jb_autoloader) (not sure if it's possible)

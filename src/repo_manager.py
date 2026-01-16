@@ -5,6 +5,33 @@ import fnmatch
 
 CONFIG_FILE = os.path.join("static", "config", "repos.json")
 
+def get_config():
+    if not os.path.exists(CONFIG_FILE):
+        return {}
+    try:
+        with open(CONFIG_FILE, 'r') as f:
+            return json.load(f)
+    except:
+        return {}
+
+def save_config(config):
+    os.makedirs(os.path.dirname(CONFIG_FILE), exist_ok=True)
+    with open(CONFIG_FILE, 'w') as f:
+        json.dump(config, f, indent=4)
+
+def add_repo_entry(name, entry_data):
+    config = get_config()
+    config[name] = entry_data
+    save_config(config)
+
+def delete_repo_entry(name):
+    config = get_config()
+    if name in config:
+        del config[name]
+        save_config(config)
+        return True
+    return False
+
 def download_file(url, save_path):
     try:
         os.makedirs(os.path.dirname(save_path), exist_ok=True)
@@ -36,11 +63,9 @@ def get_latest_release_asset(repo, pattern):
         return None
 
 def update_payloads(targets=None):
-    if not os.path.exists(CONFIG_FILE):
-        return {"success": False, "message": "repos.json not found"}
-
-    with open(CONFIG_FILE, 'r') as f:
-        config = json.load(f)
+    config = get_config()
+    if not config:
+        return {"success": False, "message": "repos.json empty or not found"}
 
     updated_files = []
     errors = []

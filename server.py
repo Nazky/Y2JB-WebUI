@@ -2,12 +2,12 @@ import fnmatch
 import json
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_cors import CORS
-from werkzeug.utils import secure_filename
+from werkzeug.utils import secure_filename as werkzeug_secure_filename
 import os
 from src.SendPayload import send_payload
 from src.delete_payload import handle_delete_payload
 from src.download_payload import handle_url_download
-from src.repo_manager import update_payloads
+from src.repo_manager import update_payloads, add_repo_entry, delete_repo_entry
 import time
 import threading
 import requests
@@ -104,13 +104,19 @@ def edit_ip():
 @app.route('/list_payloads')
 def list_files():
     folder = "payloads"
+    payload_files = []
     try:
-        files = [f for f in os.listdir(folder)
-                if f.lower().endswith(('.bin', '.elf', '.js'))]
-        return jsonify(files)
-    except:
+        for root, dirs, files in os.walk(folder):
+            for file in files:
+                if file.lower().endswith(('.bin', '.elf', '.js')):
+                    full_path = os.path.join(root, file)
+                    rel_path = os.path.relpath(full_path, folder)
+                    rel_path = rel_path.replace("\\", "/") 
+                    payload_files.append(rel_path)
+        return jsonify(payload_files)
+    except Exception as e:
         return jsonify({"error": "Folder not found"}), 404
-    
+
 @app.route('/upload_payload', methods=['POST'])
 def upload_payload():
     if 'file' not in request.files:
@@ -143,8 +149,18 @@ def download_payload_url():
         data = request.get_json()
         url = data.get('url')
         response, status_code = handle_url_download(url, PAYLOAD_DIR, ALLOWED_EXTENSIONS)
-        return jsonify(response), status_code
         
+        if status_code == 200:
+            filename = response.get('filename')
+            if filename:
+                entry = {
+                    "type": "direct",
+                    "url": url,
+                    "save_path": f"payloads/{filename}"
+                }
+                add_repo_entry(filename, entry)
+        
+        return jsonify(response), status_code
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -220,6 +236,47 @@ def update_repos():
         targets = data.get('targets', ['all'])
         result = update_payloads(targets)
         return jsonify(result)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/settings/repos')
+def repo_manager_ui():
+    return render_template('repos.html')
+
+@app.route('/api/repos/list')
+def get_repo_list():
+    try:
+        with open(os.path.join("static", "config", "repos.json"), 'r') as f:
+            return jsonify(json.load(f))
+    except:
+        return jsonify({})
+
+@app.route('/api/repos/add', methods=['POST'])
+def add_new_repo():
+    try:
+        data = request.json
+        name = data.get('name')
+        old_name = data.get('old_name')
+
+        if not name: 
+            return jsonify({"error": "Missing name"}), 400
+        
+        if old_name and old_name != name:
+            delete_repo_entry(old_name)
+
+        config_data = {k:v for k,v in data.items() if k not in ['name', 'old_name']}
+        add_repo_entry(name, config_data)
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/repos/delete', methods=['POST'])
+def remove_repo():
+    try:
+        data = request.json
+        name = data.get('name')
+        delete_repo_entry(name)
+        return jsonify({"success": True})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
