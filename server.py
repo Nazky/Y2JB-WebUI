@@ -19,7 +19,7 @@ CORS(app)
 PAYLOAD_DIR = "payloads"
 CONFIG_DIR = "static/config"
 CONFIG_FILE = os.path.join(CONFIG_DIR, "settings.json")
-ALLOWED_EXTENSIONS = {'bin', 'elf'}
+ALLOWED_EXTENSIONS = {'bin', 'elf', 'js'}
 url = "http://localhost:8000/send_payload"
 
 os.makedirs(PAYLOAD_DIR, exist_ok=True)
@@ -106,7 +106,7 @@ def list_files():
     folder = "payloads"
     try:
         files = [f for f in os.listdir(folder)
-                if f.lower().endswith(('.bin', '.elf'))]
+                if f.lower().endswith(('.bin', '.elf', '.js'))]
         return jsonify(files)
     except:
         return jsonify({"error": "Folder not found"}), 404
@@ -176,7 +176,12 @@ def sending_payload():
             else:
                 return jsonify({"error": "Failed to send lapse.js"}), 500
         else:
-            result = send_payload(file_path=payload, host=host, port=9021)
+            port = 9021
+            if payload.lower().endswith('.js'):
+                port = 50000
+            
+            result = send_payload(file_path=payload, host=host, port=port)
+            
             if result:
                 return jsonify({"success": True, "message": "Custom payload sent"})
             else:
