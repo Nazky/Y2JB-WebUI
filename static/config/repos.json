@@ -28,6 +28,12 @@
         "repo": "drakmor/ftpsrv",
         "asset_pattern": "ftpsrv-ps5.elf"
     },
+    "websrv-ps5.elf": {
+        "type": "release",
+        "save_path": "payloads/websrv-ps5.elf",
+        "repo": "ps5-payload-dev/websrv",
+        "asset_pattern": "websrv-ps5.elf"
+    },
     "download0.dat": {
         "type": "release",
         "repo": "itsPLK/ps5_y2jb_autoloader",

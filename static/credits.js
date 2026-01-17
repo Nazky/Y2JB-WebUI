@@ -39,6 +39,14 @@ document.addEventListener('DOMContentLoaded', () => {
             url: "https://github.com/drakmor/ftpsrv",
             authorUrl: "https://github.com/drakmor",
             avatar: "https://avatars.githubusercontent.com/u/1344732?v=4"
+        },
+        {
+            author: "drakmor",
+            project: "websrv-ps5.elf",
+            role: "Payload",
+            url: "https://github.com/ps5-payload-dev/websrv",
+            authorUrl: "https://github.com/john-tornblom",
+            avatar: "https://avatars.githubusercontent.com/u/547534?v=4"
         }
     ];
 
