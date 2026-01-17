@@ -41,8 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
             avatar: "https://avatars.githubusercontent.com/u/1344732?v=4"
         },
         {
-            author: "drakmor",
-            project: "websrv-ps5.elf",
+            author: "john-tornblom",
+            project: "websrv-ps5",
             role: "Payload",
             url: "https://github.com/ps5-payload-dev/websrv",
             authorUrl: "https://github.com/john-tornblom",
