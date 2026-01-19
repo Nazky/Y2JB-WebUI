@@ -19,12 +19,6 @@ function loadTheme() {
 }
 
 function updateThemeIcon(isDark) {
-    const icon = document.getElementById('theme-icon');
-    if (icon) {
-        if (isDark) {
-            icon.className = 'fa-solid fa-moon';
-        } else {
-            icon.className = 'fa-solid fa-sun text-yellow-500';
-        }
-    }
+    document.querySelectorAll('#theme-icon')
+        .forEach(el => (isDark ? el.className = 'fa-solid fa-moon' : el.className = 'fa-solid fa-sun text-yellow-500'));
 }

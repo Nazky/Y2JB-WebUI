@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     loadsettings();
-    loadTheme(); 
+    loadTheme();
     fetch("/api/network_info")
         .then(r => r.json())
         .then(info => {
@@ -66,7 +66,7 @@ async function uploadPayload() {
         if (!response.ok) throw new Error(`Status ${response.status}`);
 
         Toast.show(`Successfully uploaded ${file.name}`, 'success');
-        fileInput.value = ""; 
+        fileInput.value = "";
         await loadpayloads();
 
     } catch (error) {
@@ -94,7 +94,7 @@ async function loadIP() {
         } else {
             document.getElementById('IP').value = '';
         }
-        
+
     } catch (error) {
         console.error('Error:', error);
         document.getElementById('IP').innerHTML = 'Error loading IP';
@@ -123,16 +123,16 @@ async function loadAJB() {
 async function setajb(str) {
     await fetch('/edit_ajb', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: str })
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({content: str})
     });
 }
 
 async function setip(str) {
     await fetch('/edit_ip', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: str })
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({content: str})
     });
 }
 
@@ -142,8 +142,8 @@ async function saveFTPPort() {
     if (portValue.trim() !== "") {
         await fetch('/edit_ftp_port', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ content: portValue })
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({content: portValue})
         });
     }
 }
@@ -154,7 +154,7 @@ async function loadFTPPort() {
         if (savedPort) {
             document.getElementById('FTP_PORT').value = savedPort;
         } else {
-            document.getElementById('FTP_PORT').value = '1337'; 
+            document.getElementById('FTP_PORT').value = '1337';
         }
     } catch (error) {
         console.error('Error loading FTP Port:', error);
@@ -164,16 +164,16 @@ async function loadFTPPort() {
 async function installDownload0() {
     const btn = document.getElementById('btn-update-dl0');
     const originalText = btn.innerHTML;
-    
-    if(!confirm("Install local download0.dat to PS5? Ensure you updated it in Repos first.")) return;
+
+    if (!confirm("Install local download0.dat to PS5? Ensure you updated it in Repos first.")) return;
 
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Installing...';
     btn.disabled = true;
 
     try {
-        const response = await fetch('/tools/update_download0', { method: 'POST' });
+        const response = await fetch('/tools/update_download0', {method: 'POST'});
         const data = await response.json();
-        
+
         if (data.success) {
             Toast.show(data.message, 'success');
         } else {
@@ -190,16 +190,16 @@ async function installDownload0() {
 async function blockUpdates() {
     const btn = document.getElementById('btn-block-upd');
     const originalText = btn.innerHTML;
-    
-    if(!confirm("This will patch system files to block updates. Proceed?")) return;
+
+    if (!confirm("This will patch system files to block updates. Proceed?")) return;
 
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Patching...';
     btn.disabled = true;
 
     try {
-        const response = await fetch('/tools/block_updates', { method: 'POST' });
+        const response = await fetch('/tools/block_updates', {method: 'POST'});
         const data = await response.json();
-        
+
         if (data.success) {
             Toast.show(data.message, 'success');
         } else {
@@ -213,11 +213,11 @@ async function blockUpdates() {
     }
 }
 
-async function SendPayload(str="") {
+async function SendPayload(str = "") {
     const btn = document.getElementById('SJB');
 
     try {
-        if(!str) {
+        if (!str) {
             btn.disabled = true;
             btn.classList.add('opacity-80', 'cursor-wait');
             btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-3xl"></i><span>Running...</span>';
@@ -227,7 +227,7 @@ async function SendPayload(str="") {
 
         const response = await fetch('/send_payload', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 payload: str,
                 IP: document.getElementById('IP').value
@@ -235,18 +235,18 @@ async function SendPayload(str="") {
         });
 
         const data = await response.json();
-        
+
         if (response.ok) {
-             if(!str) Toast.show('Jailbreak command sent!', 'success');
-             else Toast.show('Payload sent successfully', 'success');
+            if (!str) Toast.show('Jailbreak command sent!', 'success');
+            else Toast.show('Payload sent successfully', 'success');
         } else {
-             Toast.show(data.error || 'Failed to send payload', 'error');
+            Toast.show(data.error || 'Failed to send payload', 'error');
         }
 
     } catch (error) {
         Toast.show('Connection Error: ' + error, 'error');
     } finally {
-        if(!str) {
+        if (!str) {
             btn.disabled = false;
             btn.classList.remove('opacity-80', 'cursor-wait');
             btn.innerHTML = '<i class="fa-solid fa-bolt text-3xl"></i><span>Jailbreak</span>';
@@ -255,16 +255,16 @@ async function SendPayload(str="") {
 }
 
 async function DeletePayload(str) {
-    if(!confirm(`Delete ${str}?`)) return;
+    if (!confirm(`Delete ${str}?`)) return;
 
     try {
         const response = await fetch('/delete_payload', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ payload: str })
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({payload: str})
         });
-        
-        if(response.ok) {
+
+        if (response.ok) {
             Toast.show(`${str} deleted`, 'success');
             await loadpayloads();
         } else {
@@ -284,16 +284,16 @@ async function loadsettings() {
 
 async function togglePayloadIndex(filename, checkbox) {
     const enabled = checkbox.checked;
-    const configKey = filename.split('/').pop(); 
+    const configKey = filename.split('/').pop();
 
     try {
         const response = await fetch('/api/payload_config/toggle', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ filename: configKey, enabled })
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({filename: configKey, enabled})
         });
-        
-        if(!response.ok) throw new Error("API Error");
+
+        if (!response.ok) throw new Error("API Error");
 
         Toast.show(`${configKey} ${enabled ? 'enabled' : 'disabled'} for autoload`, 'info');
 
@@ -319,12 +319,12 @@ async function togglePayloadDelay(filename, btn) {
     try {
         const response = await fetch('/api/payload_delays/toggle', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ filename, enabled: newState })
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({filename, enabled: newState})
         });
 
-        if(response.ok) {
-             Toast.show(`Delay ${newState ? 'enabled' : 'disabled'} for ${filename}`, 'info');
+        if (response.ok) {
+            Toast.show(`Delay ${newState ? 'enabled' : 'disabled'} for ${filename}`, 'info');
         } else {
             throw new Error("API Error");
         }
@@ -342,7 +342,7 @@ async function loadpayloads() {
             fetch('/api/payload_order'),
             fetch('/api/payload_delays')
         ]);
-        
+
         let files = await filesRes.json();
         const config = await configRes.json();
         const order = await orderRes.json();
@@ -354,8 +354,8 @@ async function loadpayloads() {
         if (countElement) {
             countElement.textContent = files ? files.length : 0;
         }
-        
-        listElement.innerHTML = ''; 
+
+        listElement.innerHTML = '';
 
         if (!files || files.length === 0) {
             document.getElementById('empty-state').classList.remove('hidden');
@@ -383,9 +383,9 @@ async function loadpayloads() {
             card.className = "draggable-item input-field border rounded-xl p-2 pr-4 flex items-center justify-between group transition-colors hover:border-brand-blue mb-3 bg-black/20";
             card.draggable = true;
             card.dataset.filename = configKey;
-            
-            const delayClass = delayEnabled 
-                ? "bg-brand-blue/20 text-brand-light border-brand-blue/50" 
+
+            const delayClass = delayEnabled
+                ? "bg-brand-blue/20 text-brand-light border-brand-blue/50"
                 : "opacity-40 hover:opacity-100 border-transparent";
 
             card.innerHTML = `
@@ -441,7 +441,22 @@ async function loadpayloads() {
     }
 }
 
-document.getElementById('SJB').addEventListener('click', function(event) {
+document.getElementById('SJB').addEventListener('click', function (event) {
     event.preventDefault();
     SendPayload();
 });
+
+function toggleMenu() {
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuIcon = document.getElementById('mobile-menu-icon');
+
+    if (mobileMenu.dataset.hidden === 'true') {
+        mobileMenu.className = 'sm:hidden';
+        mobileMenu.dataset.hidden = 'false';
+        mobileMenuIcon.className = 'fa-solid fa-x';
+    } else {
+        mobileMenu.className = 'hidden';
+        mobileMenu.dataset.hidden = 'true';
+        mobileMenuIcon.className = 'fa-solid fa-bars';
+    }
+}

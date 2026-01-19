@@ -12,7 +12,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -28,7 +28,7 @@
                             border: '#2a2a2a',
                         },
                         brand: {
-                            blue: '#00439c', 
+                            blue: '#00439c',
                             light: '#0070d1',
                         }
                     }
@@ -41,168 +41,218 @@
     <script src="{{ url_for('static', filename='color_mode.js') }}" defer></script>
     <script src="{{ url_for('static', filename='direct.js') }}" defer></script>
     <script src="{{ url_for('static', filename='toast.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='drag_sort.js') }}" defer></script> 
+    <script src="{{ url_for('static', filename='drag_sort.js') }}" defer></script>
     <script src="{{ url_for('static', filename='index.js') }}" defer></script>
 </head>
 
 <body class="font-sans antialiased min-h-screen flex flex-col transition-colors duration-300">
 
-    <nav class="w-full border-b surface/90 backdrop-blur-md transition-colors duration-300 sticky top-0 z-30 border-b border-white/5">
-        <div class="mx-auto px-4 sm:px-4 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center gap-2">
-                    <i class="fa-brands fa-playstation text-3xl"></i>
-                    <span class="font-bold text-xl tracking-tight">Y2JB</span>
+<nav class="relative w-full border-b border-white/5">
+    <div class="mx-auto px-4 sm:px-4 lg:px-8">
+        <div class="relative flex h-16 items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i class="fa-brands fa-playstation text-3xl"></i>
+                <span class="font-bold text-xl tracking-tight">Y2JB</span>
+            </div>
+            <div class="absolute inset-y-0 right-0 flex items-center gap-2 sm:hidden">
+                <button onclick="toggleTheme()"
+                        class="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-105 active:scale-95">
+                    <i id="theme-icon" class="fa-solid fa-moon"></i>
+                </button>
+                <button type="button" onclick="toggleMenu()"
+                        class="relative inline-flex rounded-md w-10 h-10 rounded-full flex items-center justify-center surface border transition-all hover:scale-105 active:scale-95 hover:border-brand-blue/30">
+                    <i class="fa-solid fa-bars" id="mobile-menu-icon"></i>
+                </button>
+            </div>
+            <div class="items-center gap-2 hidden sm:flex">
+                <a href="{{ url_for('repo_manager_ui') }}"
+                   class="text-xs input-field px-3 py-1.5 rounded-lg border flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Repos</span>
+                </a>
+                <a href="{{ url_for('settings_page') }}"
+                   class="text-xs input-field px-3 py-1.5 rounded-lg border flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="{{ url_for('credits_page') }}"
+                   class="text-xs input-field px-3 py-1.5 rounded-lg border flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+                    <i class="fa-solid fa-heart"></i>
+                    <span>Credits</span>
+                </a>
+                <a href="{{ url_for('ftp_page') }}"
+                   class="text-xs input-field px-3 py-1.5 rounded-lg border flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+                    <i class="fa-solid fa-folder-tree"></i>
+                    <span>FTP - Experimental</span>
+                </a>
+                <button onclick="toggleTheme()"
+                        class="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-105 active:scale-95">
+                    <i id="theme-icon" class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden" data-hidden="true">
+        <div class="space-y-1 px-2 pt-2 pb-3">
+            <a href="{{ url_for('repo_manager_ui') }}"
+               class="text-sm input-field px-3 py-1.5 rounded-lg flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+                <i class="fa-solid fa-gear"></i>
+                <span>Repos</span>
+            </a>
+            <a href="{{ url_for('settings_page') }}"
+               class="text-sm input-field px-3 py-1.5 rounded-lg flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+                <i class="fa-solid fa-sliders"></i>
+                <span>Settings</span>
+            </a>
+            <a href="{{ url_for('credits_page') }}"
+               class="text-sm input-field px-3 py-1.5 rounded-lg flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+                <i class="fa-solid fa-heart"></i>
+                <span>Credits</span>
+            </a>
+            <a href="{{ url_for('ftp_page') }}"
+               class="text-sm input-field px-3 py-1.5 rounded-lg flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+                <i class="fa-solid fa-folder-tree"></i>
+                <span>FTP - Experimental</span>
+            </a>
+        </div>
+    </div>
+</nav>
+
+<main class="flex-1 w-full max-w-4xl mx-auto px-4 py-8 space-y-8">
+
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+
+        <div class="surface border rounded-2xl p-5 md:p-6 transition-all duration-300 hover:shadow-lg hover:border-brand-blue/20 group">
+            <h3 class="text-sm font-semibold opacity-50 uppercase tracking-wider mb-4 group-hover:text-brand-light transition-colors">
+                Connection</h3>
+
+            <div class="space-y-5">
+                <div class="relative">
+                    <input type="text" name="IP" id="IP" placeholder="PS5 IP Address"
+                           class="input-field block w-full px-4 py-3 border rounded-xl text-sm focus:ring-2 focus:ring-brand-light focus:border-transparent outline-none transition-all font-mono shadow-sm"
+                           onchange="saveIP()">
                 </div>
-                
-                <div class="flex items-center gap-2">
-                    <a href="{{ url_for('repo_manager_ui') }}" class="text-xs input-field px-3 py-1.5 rounded-lg border flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
-                        <i class="fa-solid fa-gear"></i>
-                        <span>Repos</span>
-                    </a>
-                    
-                    <a href="{{ url_for('settings_page') }}" class="text-xs input-field px-3 py-1.5 rounded-lg border flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
-                        <i class="fa-solid fa-sliders"></i>
-                        <span>Settings</span>
-                    </a>
-                    <a href="{{ url_for('credits_page') }}" class="text-xs input-field px-3 py-1.5 rounded-lg border flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
-                        <i class="fa-solid fa-heart"></i>
-                        <span>Credits</span>
-                    </a>
-                    <a href="{{ url_for('ftp_page') }}" class="text-xs input-field px-3 py-1.5 rounded-lg border flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
-                        <i class="fa-solid fa-folder-tree"></i>
-                        <span>FTP - Experimental</span>
-                    </a>
-                    <button onclick="toggleTheme()" class="w-10 h-10 rounded-full flex items-center justify-center surface border transition-all hover:scale-105 active:scale-95 hover:border-brand-blue/30">
-                        <i id="theme-icon" class="fa-solid fa-moon"></i>
-                    </button>
+
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-medium">Auto-Jailbreak</span>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="AJB-B" class="sr-only peer" onclick="saveAJB()">
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-blue"></div>
+                    </label>
                 </div>
             </div>
         </div>
-    </nav>
 
-    <main class="flex-1 w-full max-w-4xl mx-auto px-4 py-8 space-y-8">
-        
-        <section class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-            
-            <div class="surface border rounded-2xl p-5 md:p-6 transition-all duration-300 hover:shadow-lg hover:border-brand-blue/20 group">
-                <h3 class="text-sm font-semibold opacity-50 uppercase tracking-wider mb-4 group-hover:text-brand-light transition-colors">Connection</h3>
-                
-                <div class="space-y-5">
-                    <div class="relative">
-                        <input type="text" name="IP" id="IP" placeholder="PS5 IP Address" 
-                            class="input-field block w-full px-4 py-3 border rounded-xl text-sm focus:ring-2 focus:ring-brand-light focus:border-transparent outline-none transition-all font-mono shadow-sm"
-                            onchange="saveIP()">
-                    </div>
-
-                    <div class="flex items-center justify-between">
-                        <span class="text-sm font-medium">Auto-Jailbreak</span>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" id="AJB-B" class="sr-only peer" onclick="saveAJB()">
-                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-blue"></div>
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="surface border rounded-2xl p-5 md:p-6 transition-all duration-300 hover:shadow-lg hover:border-brand-blue/20 group">
-                <h3 class="text-sm font-semibold opacity-50 uppercase tracking-wider mb-4 group-hover:text-brand-light transition-colors">Tools</h3>
-                <div class="space-y-3">
-                    <button id="btn-update-dl0" onclick="installDownload0()" class="w-full px-4 py-3 bg-gray-200 dark:bg-gray-800 hover:bg-brand-blue hover:text-white rounded-xl text-sm font-bold transition-colors flex items-center justify-between group">
+        <div class="surface border rounded-2xl p-5 md:p-6 transition-all duration-300 hover:shadow-lg hover:border-brand-blue/20 group">
+            <h3 class="text-sm font-semibold opacity-50 uppercase tracking-wider mb-4 group-hover:text-brand-light transition-colors">
+                Tools</h3>
+            <div class="space-y-3">
+                <button id="btn-update-dl0" onclick="installDownload0()"
+                        class="w-full px-4 py-3 bg-gray-200 dark:bg-gray-800 hover:bg-brand-blue hover:text-white rounded-xl text-sm font-bold transition-colors flex items-center justify-between group">
                         <span class="flex flex-col items-start">
                             <span>Send Download0.dat From PC</span>
                             <span class="text-[10px] opacity-60 font-normal bg-brand-blue/10 text-brand-light px-2 py-0.5 rounded-md border border-brand-blue/20">Requires download0.dat in Repos</span>
                         </span>
-                        <i class="fa-solid fa-file-import opacity-50 group-hover:opacity-100"></i>
-                    </button>
-                    
-                    <button id="btn-block-upd" onclick="blockUpdates()" class="w-full px-4 py-3 bg-gray-200 dark:bg-gray-800 hover:bg-brand-blue hover:text-white rounded-xl text-sm font-bold transition-colors flex items-center justify-between group">
-                        <span>Block Updates</span>
-                        <i class="fa-solid fa-shield-halved opacity-50 group-hover:opacity-100"></i>
-                    </button>
-                    
-                    <div class="relative pt-2">
-                        <input type="text" id="FTP_PORT" placeholder="FTP Port (Def: 1337)" 
-                            class="input-field block w-full px-4 py-2 border rounded-xl text-xs focus:ring-2 focus:ring-brand-light focus:border-transparent outline-none transition-all font-mono shadow-sm"
-                            onchange="saveFTPPort()">
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex flex-col md:col-span-2">
-                <button id="SJB" class="touch-manipulation group relative flex-1 w-full min-h-[120px] md:min-h-[100px] overflow-hidden bg-gradient-to-br from-brand-blue to-brand-light hover:to-blue-500 text-white font-bold text-2xl rounded-2xl shadow-xl shadow-brand-blue/20 transition-all transform active:scale-[0.98] border border-white/10">
-                    <i class="fa-brands fa-playstation absolute -right-6 -bottom-6 text-9xl opacity-10 rotate-12 group-hover:rotate-0 transition-transform duration-500"></i>
-                    <div class="relative z-10 flex items-center justify-center gap-4 tracking-widest uppercase">
-                        <i class="fa-solid fa-bolt text-3xl animate-pulse group-hover:text-yellow-300 transition-colors"></i>
-                        <span>Jailbreak</span>
-                    </div>
+                    <i class="fa-solid fa-file-import opacity-50 group-hover:opacity-100"></i>
                 </button>
-            </div>
-        </section>
 
-        <section class="surface border rounded-2xl p-5 md:p-6 transition-colors duration-300 flex flex-col h-[600px] shadow-sm">
-            <div class="flex flex-col xl:flex-row items-start xl:items-center justify-between mb-6 gap-4">
-                <h3 class="text-lg font-bold flex items-center gap-2">
-                    Payloads
-                    <span id="payload-count" class="text-xs font-mono opacity-60 font-medium bg-brand-blue/10 text-brand-light px-2 py-0.5 rounded-md border border-brand-blue/20">0</span>
-                </h3>
-                
-                <div class="flex flex-col sm:flex-row gap-3 w-full xl:w-auto">
-                    <div class="flex gap-2 w-full sm:w-auto">
-                         <input type="text" id="directUrlInput" placeholder="URL (.bin/.elf/.js)" class="input-field flex-1 sm:w-64 px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-brand-light outline-none transition-all shadow-sm">
-                         <button onclick="directDownload()" class="px-3 py-2 bg-gray-200 dark:bg-gray-800 hover:bg-brand-blue hover:text-white rounded-lg text-xs font-bold transition-colors border border-transparent hover:border-brand-blue shadow-sm" title="Download from URL">
-                             <i class="fa-solid fa-cloud-arrow-down"></i>
-                         </button>
-                    </div>
+                <button id="btn-block-upd" onclick="blockUpdates()"
+                        class="w-full px-4 py-3 bg-gray-200 dark:bg-gray-800 hover:bg-brand-blue hover:text-white rounded-xl text-sm font-bold transition-colors flex items-center justify-between group">
+                    <span>Block Updates</span>
+                    <i class="fa-solid fa-shield-halved opacity-50 group-hover:opacity-100"></i>
+                </button>
 
-                    <div class="flex gap-2 w-full sm:w-auto">
-                        <input type="file" id="fileInput" accept=".bin,.elf,.js" class="hidden">
-                        <button onclick="document.getElementById('fileInput').click()" class="flex-1 sm:flex-none px-4 py-2 input-field border rounded-lg text-sm font-medium hover:border-brand-light hover:text-brand-light transition-colors whitespace-nowrap shadow-sm">
-                            Select File
-                        </button>
-                        <button id="UPB" onclick="uploadPayload()" class="flex-1 sm:flex-none px-6 py-2 bg-gradient-to-r from-brand-blue to-brand-light hover:from-blue-600 hover:to-blue-500 text-white text-sm font-medium rounded-lg transition-all shadow-lg shadow-blue-900/20 border border-white/10">
-                            Upload
-                        </button>
-                    </div>
+                <div class="relative pt-2">
+                    <input type="text" id="FTP_PORT" placeholder="FTP Port (Def: 1337)"
+                           class="input-field block w-full px-4 py-2 border rounded-xl text-xs focus:ring-2 focus:ring-brand-light focus:border-transparent outline-none transition-all font-mono shadow-sm"
+                           onchange="saveFTPPort()">
                 </div>
             </div>
-            
-            <div id="uploadStatus" class="text-xs text-center sm:text-right h-4 mb-2 opacity-70 transition-all"></div>
-
-            <div class="flex-1 overflow-y-auto custom-scroll -mr-2 pr-2 max-h-[600px]">
-                <ul id="PL" class="grid grid-cols-1 gap-3 pb-4">
-                    </ul>
-                
-                <div id="empty-state" class="hidden h-full flex flex-col items-center justify-center opacity-30 py-20">
-                    <i class="fa-regular fa-folder-open text-6xl mb-4"></i>
-                    <p>No payloads available</p>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="w-full border-t surface/90 backdrop-blur-md border-white/5 py-4 mt-auto">
-        <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px] uppercase font-bold tracking-widest opacity-60">
-            
-            <div class="flex items-center gap-6">
-                <div class="flex items-center gap-2" title="The IP address of this WebUI server">
-                    <i class="fa-solid fa-server"></i>
-                    <span>Server: <span id="server-ip" class="text-brand-light">Loading...</span></span>
-                </div>
-                
-                <div class="flex items-center gap-2" title="Your device's IP address">
-                    <i class="fa-solid fa-laptop-code"></i>
-                    <span>Client: <span id="client-ip" class="text-brand-light">Loading...</span></span>
-                </div>
-            </div>
-
-            <div class="flex items-center gap-2">
-                <i class="fa-solid fa-code-branch"></i>
-                <span>Y2JB WebUI</span>
-            </div>
-
         </div>
-    </footer>
+
+        <div class="flex flex-col md:col-span-2">
+            <button id="SJB"
+                    class="touch-manipulation group relative flex-1 w-full min-h-[120px] md:min-h-[100px] overflow-hidden bg-gradient-to-br from-brand-blue to-brand-light hover:to-blue-500 text-white font-bold text-2xl rounded-2xl shadow-xl shadow-brand-blue/20 transition-all transform active:scale-[0.98] border border-white/10">
+                <i class="fa-brands fa-playstation absolute -right-6 -bottom-6 text-9xl opacity-10 rotate-12 group-hover:rotate-0 transition-transform duration-500"></i>
+                <div class="relative z-10 flex items-center justify-center gap-4 tracking-widest uppercase">
+                    <i class="fa-solid fa-bolt text-3xl animate-pulse group-hover:text-yellow-300 transition-colors"></i>
+                    <span>Jailbreak</span>
+                </div>
+            </button>
+        </div>
+    </section>
+
+    <section
+            class="surface border rounded-2xl p-5 md:p-6 transition-colors duration-300 flex flex-col h-[600px] shadow-sm">
+        <div class="flex flex-col xl:flex-row items-start xl:items-center justify-between mb-6 gap-4">
+            <h3 class="text-lg font-bold flex items-center gap-2">
+                Payloads
+                <span id="payload-count"
+                      class="text-xs font-mono opacity-60 font-medium bg-brand-blue/10 text-brand-light px-2 py-0.5 rounded-md border border-brand-blue/20">0</span>
+            </h3>
+
+            <div class="flex flex-col sm:flex-row gap-3 w-full xl:w-auto">
+                <div class="flex gap-2 w-full sm:w-auto">
+                    <input type="text" id="directUrlInput" placeholder="URL (.bin/.elf/.js)"
+                           class="input-field flex-1 sm:w-64 px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-brand-light outline-none transition-all shadow-sm">
+                    <button onclick="directDownload()"
+                            class="px-3 py-2 bg-gray-200 dark:bg-gray-800 hover:bg-brand-blue hover:text-white rounded-lg text-xs font-bold transition-colors border border-transparent hover:border-brand-blue shadow-sm"
+                            title="Download from URL">
+                        <i class="fa-solid fa-cloud-arrow-down"></i>
+                    </button>
+                </div>
+
+                <div class="flex gap-2 w-full sm:w-auto">
+                    <input type="file" id="fileInput" accept=".bin,.elf,.js" class="hidden">
+                    <button onclick="document.getElementById('fileInput').click()"
+                            class="flex-1 sm:flex-none px-4 py-2 input-field border rounded-lg text-sm font-medium hover:border-brand-light hover:text-brand-light transition-colors whitespace-nowrap shadow-sm">
+                        Select File
+                    </button>
+                    <button id="UPB" onclick="uploadPayload()"
+                            class="flex-1 sm:flex-none px-6 py-2 bg-gradient-to-r from-brand-blue to-brand-light hover:from-blue-600 hover:to-blue-500 text-white text-sm font-medium rounded-lg transition-all shadow-lg shadow-blue-900/20 border border-white/10">
+                        Upload
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="uploadStatus" class="text-xs text-center sm:text-right h-4 mb-2 opacity-70 transition-all"></div>
+
+        <div class="flex-1 overflow-y-auto custom-scroll -mr-2 pr-2 max-h-[600px]">
+            <ul id="PL" class="grid grid-cols-1 gap-3 pb-4">
+            </ul>
+
+            <div id="empty-state" class="hidden h-full flex flex-col items-center justify-center opacity-30 py-20">
+                <i class="fa-regular fa-folder-open text-6xl mb-4"></i>
+                <p>No payloads available</p>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="w-full border-t surface/90 backdrop-blur-md border-white/5 py-4 mt-auto">
+    <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px] uppercase font-bold tracking-widest opacity-60">
+
+        <div class="flex items-center gap-6">
+            <div class="flex items-center gap-2" title="The IP address of this WebUI server">
+                <i class="fa-solid fa-server"></i>
+                <span>Server: <span id="server-ip" class="text-brand-light">Loading...</span></span>
+            </div>
+
+            <div class="flex items-center gap-2" title="Your device's IP address">
+                <i class="fa-solid fa-laptop-code"></i>
+                <span>Client: <span id="client-ip" class="text-brand-light">Loading...</span></span>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-code-branch"></i>
+            <span>Y2JB WebUI</span>
+        </div>
+
+    </div>
+</footer>
 </body>
 </html>
