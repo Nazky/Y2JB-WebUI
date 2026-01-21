@@ -11,8 +11,9 @@ This is a local website that allow you to manage everything related to Y2JB easi
 - **Payload Management**: Upload, delete, and send payloads with recursive directory support.
 - **Repository Manager**: Automatically update payloads directly from GitHub Releases or URLs.
 - **DNS Manager**: Redirect domains (like the User Guide) or block Sony updates via sinkholing.
-- **FTP Manager**: Browse, upload, delete, and edit files on your PS5 from the browser.
-- **Automation**: Integrated Auto-Jailbreak and configurable delay, customizable firing order.
+- **FTP Manager**: Browse, upload, delete, and edit files on your PS5 from the browser. Includes a built-in text editor and image viewer.
+- **Settings & Customization**: Configure Auto-Jailbreak, manage Payload Loading Sequence, toggle Dark Mode, and enable specific options like Kstuff autoloading.
+- **Automation**: Integrated Auto-Jailbreak with configurable delay and firing order.
 - **Tools**: One-click Update Blocker and `download0.dat` push.
 
 ### How can i upload a payload ?
@@ -34,7 +35,14 @@ Navigate to the **Repository Manager** by clicking the **"Repos"** button in the
 It allows you to intercept console traffic. Usage is explained in the WebUI.
 
 ### What can I do with the FTP Manager?
-The FTP Manager allows you to manage files on your console without external software. It includes a built-in text editor for configuration files and an image viewer. keep in mind it's really experimental. only tested on PC , but in Modded Warfare video it seemed to be working.
+The FTP Manager allows you to manage files on your console without external software. It includes a **built-in text editor** for configuration files and an **image viewer** for standard formats. Keep in mind it's experimental.
+
+### What options are in Settings?
+You can configure:
+- **Connection**: PS5 IP Address and FTP Port.
+- **Automation**: Toggle Auto-Jailbreak and "Load Kstuff" (automatically sends `kstuff.elf` if present).
+- **Sequence**: Toggle which payloads auto-load and set a global delay time.
+- **Appearance**: Toggle Dark Mode and UI Animations.
 
 ### Does this work with...
 You need something to host the server (pc, raspeberry pi, phone, ...) once the server is up you can access the WebUI from anything that can display a webpage (Android, IOS, PC, Nintendo Switch, ...).
