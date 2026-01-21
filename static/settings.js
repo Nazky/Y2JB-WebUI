@@ -15,11 +15,13 @@ async function loadSettings() {
         }
         
         const ajbCheckbox = document.getElementById('ajb');
-        if (config.ajb && config.ajb.toLowerCase() === 'true') {
-            ajbCheckbox.checked = true;
-        } else {
-            ajbCheckbox.checked = false;
-        }
+        ajbCheckbox.checked = config.ajb === 'true';
+
+        const animCheckbox = document.getElementById('ui_animations');
+        const animationsEnabled = config.ui_animations === 'true';
+        animCheckbox.checked = animationsEnabled;
+        
+        localStorage.setItem('animations', animationsEnabled);
 
     } catch (error) {
         console.error('Error loading settings:', error);
@@ -32,12 +34,14 @@ async function saveAllSettings() {
     const ftpPort = document.getElementById('ftp_port').value;
     const globalDelay = document.getElementById('global_delay').value;
     const ajb = document.getElementById('ajb').checked ? "true" : "false";
+    const uiAnimations = document.getElementById('ui_animations').checked ? "true" : "false";
 
     const payload = {
         ip: ip,
         ftp_port: ftpPort,
         global_delay: globalDelay,
-        ajb: ajb
+        ajb: ajb,
+        ui_animations: uiAnimations
     };
 
     try {
@@ -52,6 +56,7 @@ async function saveAllSettings() {
         const result = await response.json();
 
         if (result.success) {
+            localStorage.setItem('animations', uiAnimations);
             Toast.show('Settings saved successfully!', 'success');
         } else {
             Toast.show('Error: ' + result.error, 'error');

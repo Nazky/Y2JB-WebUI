@@ -2,7 +2,10 @@ function toggleTheme() {
     const html = document.documentElement;
     const isDark = html.classList.toggle('dark');
 
-    disableTransitionsTemporarily();
+
+    if (localStorage.getItem('animations') !== 'true') {
+        disableTransitionsTemporarily();
+    }
 
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
     updateThemeIcon(isDark);
@@ -12,7 +15,9 @@ function loadTheme() {
     const savedTheme = localStorage.getItem('theme');
     const isDark = savedTheme === 'dark' || !savedTheme;
 
-    disableTransitionsTemporarily();
+    if (localStorage.getItem('animations') !== 'true') {
+        disableTransitionsTemporarily();
+    }
 
     if (isDark) {
         document.documentElement.classList.add('dark');
