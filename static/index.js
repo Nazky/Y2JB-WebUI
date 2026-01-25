@@ -573,7 +573,7 @@ function toggleMenu() {
     const mobileMenuIcon = document.getElementById('mobile-menu-icon');
 
     if (mobileMenu.dataset.hidden === 'true') {
-        mobileMenu.className = 'sm:hidden';
+        mobileMenu.className = 'lg:hidden';
         mobileMenu.dataset.hidden = 'false';
         mobileMenuIcon.className = 'fa-solid fa-x';
     } else {

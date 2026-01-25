@@ -54,7 +54,7 @@
                 <i class="fa-brands fa-playstation text-3xl"></i>
                 <span class="font-bold text-xl tracking-tight">Y2JB</span>
             </div>
-            <div class="absolute inset-y-0 right-0 flex items-center gap-2 sm:hidden">
+            <div class="absolute inset-y-0 right-0 flex items-center gap-2 lg:hidden">
                 <button onclick="toggleTheme()"
                         class="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-105 active:scale-95">
                     <i id="theme-icon" class="fa-solid fa-moon"></i>
@@ -64,7 +64,7 @@
                     <i class="fa-solid fa-bars" id="mobile-menu-icon"></i>
                 </button>
             </div>
-            <div class="items-center gap-2 hidden sm:flex">
+            <div class="items-center gap-2 hidden lg:flex">
                 <a href="{{ url_for('repo_manager_ui') }}"
                    class="text-xs input-field px-3 py-1.5 rounded-lg border flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
                     <i class="fa-solid fa-gear"></i>
