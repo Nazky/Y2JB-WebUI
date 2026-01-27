@@ -131,8 +131,8 @@ async function saveRepo() {
     const type = document.getElementById('repo-type').value;
 
     if (!name) return Toast.show("Filename is required", "warning");
-    if (!name.endsWith('.bin') && !name.endsWith('.elf') && !name.endsWith('.js')) {
-        return Toast.show("Filename must end with .bin, .elf, or .js", "warning");
+    if (!name.endsWith('.bin') && !name.endsWith('.elf') && !name.endsWith('.js') && !name.endsWith('.dat')) {
+        return Toast.show("Filename must end with .bin, .elf, .js, or .dat", "warning");
     }
 
     let payload = { name, old_name: oldName, type, save_path: `payloads/${name}` };

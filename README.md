@@ -101,6 +101,7 @@ If you did check the "Auto-Jailbreak" before pressing the "Start Jailbreak" butt
 ## Credits
 
 - [Gezine](https://github.com/Gezine) | [Y2JB](https://github.com/Gezine/Y2JB/)
+- [rmuxnet](https://github.com/rmuxnet) | [Features for the WebUI](https://github.com/rmuxnet/Y2JB-WebUI)
 - [itsPLK ](https://github.com/itsPLK) | [ps5_y2jb_autoloader](https://github.com/itsPLK/ps5_y2jb_autoloader)
 - [EchoStretch](https://github.com/EchoStretch) | [kstuff](https://github.com/EchoStretch/kstuff)
 - [voidwhisper-ps](https://github.com/voidwhisper-ps) | [ShadowMount](https://github.com/adel-ailane/ShadowMount)

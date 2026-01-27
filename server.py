@@ -275,11 +275,16 @@ def list_files():
     try:
         for root, dirs, files in os.walk(folder):
             for file in files:
-                if file.lower().endswith(('.bin', '.elf', '.js')):
+                if file.lower().endswith(('.bin', '.elf', '.js', '.dat')):
                     full_path = os.path.join(root, file)
                     rel_path = os.path.relpath(full_path, folder)
                     rel_path = rel_path.replace("\\", "/") 
                     payload_files.append(rel_path)
+        
+        order = get_payload_order()
+        weights = {name: i for i, name in enumerate(order)}
+        payload_files.sort(key=lambda x: weights.get(x, 9999))
+        
         return jsonify(payload_files)
     except Exception as e:
         return jsonify({"error": "Folder not found"}), 404

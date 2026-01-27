@@ -9,6 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
             avatar: "https://avatars.githubusercontent.com/u/30000519?v=4"
         },
         {
+            author: "rmuxnet",
+            project: "Y2JB-WebUI",
+            role: "Contributor",
+            url: "https://github.com/Nazky/Y2JB-WebUI",
+            authorUrl: "https://github.com/rmuxnet",
+            avatar: "https://avatars.githubusercontent.com/u/116457149?v=4"
+        },
+        {
             author: "itsPLK",
             project: "ps5_y2jb_autoloader",
             role: "Inspiration",
