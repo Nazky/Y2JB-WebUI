@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Y2JB - System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        oled: { base: '#000000', surface: '#121212', border: '#2a2a2a' },
+                        brand: { blue: '#00439c', light: '#0070d1', danger: '#ef4444' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/compact.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/system.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/toast.css') }}">
+    <script src="{{ url_for('static', filename='toast.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='color_mode.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='system.js') }}" defer></script>
+</head>
+<body class="font-sans antialiased min-h-screen flex flex-col p-6 max-w-4xl mx-auto bg-oled-base text-gray-200">
+
+    <header class="flex items-center justify-between mb-8">
+        <div class="flex items-center gap-4">
+            <a href="/" class="surface border w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/5 transition-colors hover:border-brand-light group">
+                <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+            </a>
+            <div>
+                <h1 class="text-2xl font-bold tracking-tight">System Status</h1>
+                <p class="text-xs opacity-50 uppercase tracking-widest font-medium">Host Monitor & Controls</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <span id="os-badge" class="px-3 py-1 bg-white/5 rounded-full text-xs font-mono border border-white/10">Loading OS...</span>
+        </div>
+    </header>
+
+    <main class="space-y-6">
+        
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            
+            <div class="surface border rounded-2xl p-6 relative overflow-hidden">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-sm font-bold opacity-70">CPU Usage</h3>
+                    <i class="fa-solid fa-microchip text-brand-light"></i>
+                </div>
+                <div class="relative pt-2">
+                    <div class="flex items-end gap-2 mb-2">
+                        <span id="cpu-val" class="text-3xl font-bold">0%</span>
+                    </div>
+                    <div class="w-full bg-white/10 rounded-full h-2">
+                        <div id="cpu-bar" class="bg-brand-light h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="surface border rounded-2xl p-6 relative overflow-hidden">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-sm font-bold opacity-70">Memory</h3>
+                    <i class="fa-solid fa-memory text-purple-400"></i>
+                </div>
+                <div class="relative pt-2">
+                    <div class="flex items-end gap-2 mb-2">
+                        <span id="ram-val" class="text-3xl font-bold">0%</span>
+                        <span id="ram-detail" class="text-xs opacity-50 mb-1">0/0 GB</span>
+                    </div>
+                    <div class="w-full bg-white/10 rounded-full h-2">
+                        <div id="ram-bar" class="bg-purple-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="surface border rounded-2xl p-6 relative overflow-hidden">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-sm font-bold opacity-70">Disk Space</h3>
+                    <i class="fa-solid fa-hard-drive text-green-400"></i>
+                </div>
+                <div class="relative pt-2">
+                    <div class="flex items-end gap-2 mb-2">
+                        <span id="disk-val" class="text-3xl font-bold">0%</span>
+                    </div>
+                    <div class="w-full bg-white/10 rounded-full h-2">
+                        <div id="disk-bar" class="bg-green-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="surface border rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400">
+                    <i class="fa-solid fa-stopwatch text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-xs font-bold uppercase opacity-50">System Uptime</h3>
+                    <p id="uptime-val" class="text-lg font-mono">Loading...</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="surface border border-red-500/20 rounded-2xl p-6 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500/50 to-transparent"></div>
+            
+            <h2 class="text-lg font-bold mb-6 flex items-center gap-2 text-red-400">
+                <i class="fa-solid fa-triangle-exclamation"></i> Power Controls
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <button onclick="confirmPower('reboot')" class="group relative overflow-hidden bg-red-500/5 hover:bg-red-500/10 border border-red-500/20 text-red-400 rounded-xl p-4 transition-all">
+                    <div class="flex items-center gap-3 relative z-10">
+                        <i class="fa-solid fa-rotate-right text-xl group-hover:rotate-180 transition-transform duration-500"></i>
+                        <div class="text-left">
+                            <span class="block font-bold">Reboot Host</span>
+                            <span class="text-[10px] opacity-60">Restart the server machine</span>
+                        </div>
+                    </div>
+                </button>
+
+                <button onclick="confirmPower('shutdown')" class="group relative overflow-hidden bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-500 rounded-xl p-4 transition-all">
+                    <div class="flex items-center gap-3 relative z-10">
+                        <i class="fa-solid fa-power-off text-xl group-hover:scale-110 transition-transform"></i>
+                        <div class="text-left">
+                            <span class="block font-bold">Shutdown Host</span>
+                            <span class="text-[10px] opacity-60">Power off the server machine</span>
+                        </div>
+                    </div>
+                </button>
+            </div>
+            
+            <p class="text-[10px] text-center mt-4 opacity-40">
+                <i class="fa-solid fa-info-circle"></i> If running in Docker, these actions may only stop the container.
+            </p>
+        </section>
+
+    </main>
+
+</body>
+</html>

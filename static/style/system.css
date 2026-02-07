@@ -1,0 +1,12 @@
+#cpu-bar, #ram-bar, #disk-bar {
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.surface {
+    transition: border-color 0.2s;
+}
+
+.surface:hover {
+    border-color: rgba(255, 255, 255, 0.1);
+}

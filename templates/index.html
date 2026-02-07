@@ -80,6 +80,11 @@
                     <i class="fa-solid fa-sliders"></i>
                     <span>Settings</span>
                 </a>
+                <a href="{{ url_for('system_page') }}"
+                   class="text-xs input-field px-3 py-1.5 rounded-lg border flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+                    <i class="fa-solid fa-server"></i>
+                    <span>System</span>
+                </a>
                 <a href="{{ url_for('logs_page') }}"
                    class="text-xs input-field px-3 py-1.5 rounded-lg border flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
                     <i class="fa-solid fa-terminal"></i>
@@ -124,6 +129,11 @@
                class="text-sm input-field px-3 py-1.5 rounded-lg flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
                 <i class="fa-solid fa-sliders"></i>
                 <span>Settings</span>
+            </a>
+            <a href="{{ url_for('system_page') }}"
+               class="text-sm input-field px-3 py-1.5 rounded-lg flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+                <i class="fa-solid fa-server"></i>
+                <span>System</span>
             </a>
             <a href="{{ url_for('logs_page') }}"
                class="text-sm input-field px-3 py-1.5 rounded-lg flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
