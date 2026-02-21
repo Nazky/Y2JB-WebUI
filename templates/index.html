@@ -50,13 +50,13 @@
     <script src="{{ url_for('static', filename='effects.js') }}" defer></script>
 </head>
 
-<body class="font-sans antialiased min-h-screen flex flex-col transition-colors duration-300">
+<body class="font-sans antialiased min-h-screen flex flex-col transition-colors duration-300 bg-gray-100 dark:bg-oled-base text-gray-900 dark:text-gray-200">
 
 <nav class="relative w-full border-b border-white/5">
     <div class="mx-auto px-4 sm:px-4 lg:px-8">
         <div class="relative flex h-16 items-center justify-between">
             <div class="flex items-center gap-2">
-                <i class="fa-brands fa-playstation text-3xl"></i>
+                <i class="fa-brands fa-playstation text-3xl text-brand-blue dark:text-white"></i>
                 <span class="font-bold text-xl tracking-tight">Y2JB</span>
             </div>
             <div class="absolute inset-y-0 right-0 flex items-center gap-2 lg:hidden">
@@ -112,7 +112,7 @@
                 </a>
                 <button onclick="toggleTheme()"
                         class="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-105 active:scale-95">
-                    <i id="theme-icon" class="fa-solid fa-moon"></i>
+                    <i id="theme-icon-desktop" class="fa-solid fa-moon"></i>
                 </button>
             </div>
         </div>

@@ -22,9 +22,10 @@
         }
     </script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style/credits.css') }}">
+    <script src="{{ url_for('static', filename='color_mode.js') }}" defer></script>
     <script src="{{ url_for('static', filename='credits.js') }}" defer></script>
 </head>
-<body class="font-sans antialiased min-h-screen flex flex-col p-6 max-w-4xl mx-auto transition-colors duration-300">
+<body class="font-sans antialiased min-h-screen flex flex-col p-6 max-w-4xl mx-auto transition-colors duration-300 bg-gray-100 dark:bg-oled-base text-gray-900 dark:text-gray-200">
 
     <header class="flex items-center gap-4 mb-8 animate-fade-in">
         <a href="/" class="surface border w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/5 transition-all hover:scale-110 active:scale-95 text-brand-light hover:shadow-lg hover:shadow-brand-blue/20">
