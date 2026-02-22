@@ -22,6 +22,7 @@ from src.dns_server import DNSServer
 from src.backpork.core import BackporkEngine
 from src.features import setup_logging, run_startup_tasks, get_logs
 from src.system_manager import get_system_stats, power_control
+from src.update_checker import check_for_updates
 
 app = Flask(__name__)
 app.secret_key = 'Nazky'
@@ -822,6 +823,11 @@ def api_system_power():
         return jsonify({"success": True, "message": message})
     else:
         return jsonify({"success": False, "error": message}), 500
+
+@app.route('/api/update_check')
+def api_update_check():
+    force = request.args.get('force', 'false').lower() == 'true'
+    return jsonify(check_for_updates(force=force))
 
 if __name__ == "__main__":
     config = get_config()

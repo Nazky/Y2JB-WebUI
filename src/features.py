@@ -4,6 +4,7 @@ import sys
 from collections import deque
 from datetime import datetime
 from src.repo_manager import update_payloads
+from src.update_checker import check_for_updates
 
 LOG_BUFFER = deque(maxlen=2000)
 
@@ -61,6 +62,9 @@ def run_startup_tasks(config):
     if config.get("auto_update_repos", "true") == "true":
         print("[STARTUP] Auto-updating repositories...")
         threading.Thread(target=lambda: update_payloads(['all']), daemon=True).start()
+    
+    print("[STARTUP] Checking for codebase updates...")
+    threading.Thread(target=check_for_updates, daemon=True).start()
 
 def get_logs():
     return list(LOG_BUFFER)
