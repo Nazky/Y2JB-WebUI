@@ -12,12 +12,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY . .
 
-# Security hardening: never run as root
-RUN useradd -m appuser && chown -R appuser /app
-USER appuser
-
-# Expose port 8000
-EXPOSE 8000
+# Expose ports (8000 = WebUI, 53 = DNS)
+EXPOSE 8000 53/udp
 
 # Start the application
 CMD ["python", "server.py"]

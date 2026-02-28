@@ -5,7 +5,9 @@ services:
     build: .
     ports:
       - "8000:8000"
-    user: "1000:1000"
+      - "53:53/udp"
+    cap_add:
+      - NET_BIND_SERVICE
     volumes:
       - .:/app
     environment:
